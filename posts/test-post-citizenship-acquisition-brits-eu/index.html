@@ -4,9 +4,9 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
   
-  <title>About</title>
-  <meta property="og:title" content="About" />
-  <meta name="twitter:title" content="About" />
+  <title>test post citizenship acquisition of Brits in the EU</title>
+  <meta property="og:title" content="test post citizenship acquisition of Brits in the EU" />
+  <meta name="twitter:title" content="test post citizenship acquisition of Brits in the EU" />
   
 
   
@@ -17,7 +17,7 @@
 
   <meta name="author" content="David Reichel"/>
   <meta property="og:site_name" content="Arbitrary Data Analysis" />
-  <meta property="og:url" content="/about/" />
+  <meta property="og:url" content="/posts/test-post-citizenship-acquisition-brits-eu/" />
 
   
   <meta name="twitter:card" content="summary" />
@@ -58,12 +58,12 @@
 
 <article class="p-article">
   <header>
-    <h1>About</h1>
+    <h1>test post citizenship acquisition of Brits in the EU</h1>
     <div>
       <div class="c-time">
         Posted on
-        <time datetime="2016-05-05T21:48:51-07:00">
-          May 5, 2016
+        <time datetime="2019-09-28T00:00:00Z">
+          Sep 28, 2019
         </time>
       </div>
       
@@ -71,7 +71,46 @@
   </header>
   
   <section id="js-article" class="p-article__body">
-    <p>This is a &ldquo;hello world&rdquo; example website for the <a href="https://github.com/rstudio/blogdown"><strong>blogdown</strong></a> package. The theme was forked from <a href="https://github.com/jrutheiser/hugo-lithium-theme">@jrutheiser/hugo-lithium-theme</a> and modified by <a href="https://github.com/yihui/hugo-lithium">Yihui Xie</a>.</p>
+    
+
+
+<div id="this-is-just-a-test-post" class="section level2">
+<h2>This is just a test post</h2>
+<p>Hi everyone. This is just a test post. I am trying to sort out how I could create a blog with R (using the blogdown package) on github pages. <a href="https://fengkehh.github.io/post/2017-03-16-how-this-blog-is-made-part-ii/">This</a> description - among other great online resources - helped me doing it.</p>
+<p>To test if it works, I show below citizenship acquisitions of British people in other EU country before and after Brexit vote. First the R code, based on the packages: tidyverse and eurostat. The code first directly accesses the Eurostat database to download the dataset, including citizenship acquisions by previous citizenship. Then filter for previous UK citizens (in some countries they can keep their revious citizenship), then filter for other selections and only EU countries.</p>
+<pre class="r"><code>dat &lt;- get_eurostat(&quot;migr_acq&quot;) # get table migr_acq from Eurostat
+
+# define the list of EU countries without UK
+EUlist &lt;- c(&quot;AT&quot;,&quot;BE&quot;,&quot;BG&quot;,&quot;HR&quot;,&quot;CY&quot;,
+             &quot;CZ&quot;,&quot;DK&quot;,&quot;EE&quot;,&quot;FI&quot;,
+             &quot;FR&quot;,&quot;DE&quot;,&quot;EL&quot;,&quot;HU&quot;,
+             &quot;IE&quot;,&quot;IT&quot;,&quot;LV&quot;,&quot;LT&quot;,
+             &quot;LU&quot;,&quot;MT&quot;,&quot;NL&quot;,&quot;PL&quot;,
+             &quot;PT&quot;,&quot;RO&quot;,&quot;SK&quot;,&quot;SI&quot;,
+             &quot;ES&quot;,&quot;SE&quot;)
+
+dat &lt;- dat %&gt;%
+  filter(citizen == &quot;UK&quot;) %&gt;%
+  filter(sex == &quot;T&quot; &amp; age == &quot;TOTAL&quot; &amp; agedef == &quot;REACH&quot; &amp; geo %in% EUlist) %&gt;%
+  filter(geo != &quot;UK&quot;) %&gt;%
+  filter(time &gt; &quot;2007-01-01&quot;) %&gt;% 
+  mutate(year = str_sub(time, 1, 4)) %&gt;%
+  group_by(time, year) %&gt;% 
+  summarise(values = sum(values))
+
+p1 &lt;- ggplot(dat) +
+  geom_col(aes(year, values), fill = &quot;#8E826D&quot;) +
+  geom_text(aes(year, values, label = values), vjust = -0.3) +
+  geom_vline(aes(xintercept = 9)) +
+  geom_text(aes(x = 8, y = 10000, label = &quot;Brexit vote&quot;), hjust = 0.2) +
+  labs(x = &quot;&quot;, y = &quot;Number of citizenship acquisitions&quot;,
+       title = &quot;UK nationals acquiring citizenship in other EU countries, 2008-2017&quot;,
+       subtitle = &quot;&quot;,
+       caption = &quot;Source: data from Eurostat, table &#39;migr_acq&#39;, extracted on 28 September 2019&quot;)
+p1</code></pre>
+<p><img src="/posts/2019-09-20-test-post_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+<p>And here the test ends. Once Eurostat updates the table with 2018, you can run the code again.</p>
+</div>
 
   </section>
   <footer>
@@ -80,11 +119,11 @@
       <div class="c-pagination__ctrl">
         <div class="c-pagination__newer">
           
-          <a href="/posts/test-post-citizenship-acquisition-brits-eu/">Newer</a>
           
         </div>
         <div class="c-pagination__older">
           
+          <a href="/about/">Older</a>
           
         </div>
       </div>

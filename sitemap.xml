@@ -3,65 +3,42 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>https://david-reichel.github.com/</loc>
+    <loc>/</loc>
     <lastmod>2019-09-28T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://david-reichel.github.com/categories/</loc>
+    <loc>/categories/</loc>
     <lastmod>2019-09-28T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://david-reichel.github.com/posts/</loc>
+    <loc>/posts/</loc>
     <lastmod>2019-09-28T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://david-reichel.github.com/categories/citizenship/</loc>
+    <loc>/categories/citizenship/</loc>
     <lastmod>2019-09-28T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://david-reichel.github.com/posts/test-post-citizenship-acquisition-of-brits-in-the-eu/</loc>
+    <loc>/posts/test-post-citizenship-acquisition-brits-eu/</loc>
     <lastmod>2019-09-28T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://david-reichel.github.com/post/</loc>
-    <lastmod>2019-09-14T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://david-reichel.github.com/tags/</loc>
-    <lastmod>2019-09-14T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://david-reichel.github.com/tags/test/</loc>
-    <lastmod>2019-09-14T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://david-reichel.github.com/post/test-post/</loc>
-    <lastmod>2019-09-14T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://david-reichel.github.com/post/test-post-2/</loc>
-    <lastmod>2019-09-14T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://david-reichel.github.com/about/</loc>
+    <loc>/about/</loc>
     <lastmod>2016-05-05T21:48:51-07:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/</loc>
+    <priority>0</priority>
   </url>
   
 </urlset>
