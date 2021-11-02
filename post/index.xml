@@ -1,35 +1,24 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Posts on Arbitrary Data Analysis</title>
-    <link>https://david-reichel.github.com/post/</link>
-    <description>Recent content in Posts on Arbitrary Data Analysis</description>
+    <title>Posts on Measuring Rights</title>
+    <link>/post/</link>
+    <description>Recent content in Posts on Measuring Rights</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-gb</language>
     <copyright>&amp;copy; Copyright by David Reichel</copyright>
-    <lastBuildDate>Sat, 14 Sep 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 11 Feb 2020 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="https://david-reichel.github.com/post/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="/post/index.xml" rel="self" type="application/rss+xml" />
     
-    
-    <item>
-      <title>test post</title>
-      <link>https://david-reichel.github.com/post/test-post/</link>
-      <pubDate>Sat, 14 Sep 2019 00:00:00 +0000</pubDate>
-      
-      <guid>https://david-reichel.github.com/post/test-post/</guid>
-      <description>This is just a test postThis is a plot of citizenship acquisitions of British people in other EU country before and after Brexit vote. First the R code (based on the wonderful packages: tidyverse and eurostat)
-dat %&amp;gt;%filter(citizen == &amp;quot;UK&amp;quot;) %&amp;gt;%filter(sex == &amp;quot;T&amp;quot; &amp;amp; age == &amp;quot;TOTAL&amp;quot; &amp;amp; agedef == &amp;quot;REACH&amp;quot; &amp;amp; geo %in% EUlist) %&amp;gt;%filter(geo != &amp;quot;UK&amp;quot;) %&amp;gt;%filter(time &amp;gt; &amp;quot;2007-01-01&amp;quot;) %&amp;gt;% mutate(year = str_sub(time, 1, 4)) %&amp;gt;%group_by(time, year) %&amp;gt;% summarise(values = sum(values)) %&amp;gt;%ggplot() +geom_col(aes(year, values)) +geom_text(aes(year, values, label = values), vjust = -0.</description>
-    </item>
     
     <item>
-      <title>test post 2</title>
-      <link>https://david-reichel.github.com/post/test-post-2/</link>
-      <pubDate>Sat, 14 Sep 2019 00:00:00 +0000</pubDate>
+      <title>The ethical engineer - &#34;depends on what it is&#34;</title>
+      <link>/post/ethical-engineer/</link>
+      <pubDate>Tue, 11 Feb 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://david-reichel.github.com/post/test-post-2/</guid>
-      <description>second testhere is some text
-library(tidyverse)## -- Attaching packages ---------------------------------------- tidyverse 1.2.1 --## v ggplot2 3.1.0 v purrr 0.2.5## v tibble 2.0.1 v dplyr 0.7.8## v tidyr 0.8.2 v stringr 1.3.1## v readr 1.3.1 v forcats 0.3.0## -- Conflicts ------------------------------------------- tidyverse_conflicts() --## x dplyr::filter() masks stats::filter()## x dplyr::lag() masks stats::lag()a &amp;lt;- rnorm(100, 10, 1)b &amp;lt;- rnorm(100, 11, 0.5)plot(a, b)here we go</description>
+      <guid>/post/ethical-engineer/</guid>
+      <description>Ethical artificial intelligenceDiscussions around the use of artificial intelligence (AI) are everywhere. Pictures of robots, stories about artificial general intelligence (AGI) and the use of algorithms are featured almost daily in news papers these days. While one should not believe the hype, the past years have certainly seen major technological developments in the area of machine learning and other areas, which have contributed to many new opportunities, but at the same time present challenges for society.</description>
     </item>
     
   </channel>

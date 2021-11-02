@@ -1,25 +1,25 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>citizenship on Arbitrary Data Analysis</title>
-    <link>/categories/citizenship/</link>
-    <description>Recent content in citizenship on Arbitrary Data Analysis</description>
+    <title>citizenship on Measuring Rights</title>
+    <link>https://david-reichel.github.io/categories/citizenship/</link>
+    <description>Recent content in citizenship on Measuring Rights</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-gb</language>
     <copyright>&amp;copy; Copyright by David Reichel</copyright>
-    <lastBuildDate>Sat, 28 Sep 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 02 Nov 2021 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="/categories/citizenship/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://david-reichel.github.io/categories/citizenship/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
-      <title>test post citizenship acquisition of Brits in the EU</title>
-      <link>/posts/test-post-citizenship-acquisition-brits-eu/</link>
-      <pubDate>Sat, 28 Sep 2019 00:00:00 +0000</pubDate>
+      <title>Citizenship acquisition of Brits in the EU</title>
+      <link>https://david-reichel.github.io/posts/citizenship-acquisition-of-brits-in-the-eu/</link>
+      <pubDate>Tue, 02 Nov 2021 00:00:00 +0000</pubDate>
       
-      <guid>/posts/test-post-citizenship-acquisition-brits-eu/</guid>
-      <description>This is just a test postHi everyone. This is just a test post. I am trying to sort out how I could create a blog with R (using the blogdown package) on github pages. This description - among other great online resources - helped me doing it.
-To test if it works, I show below citizenship acquisitions of British people in other EU country before and after Brexit vote.</description>
+      <guid>https://david-reichel.github.io/posts/citizenship-acquisition-of-brits-in-the-eu/</guid>
+      <description>by David Reichel
+British citizens acquiring citizenship of an(other) EU Member StateAfter the Brexit vote, it was quite clear that many British people, who are living in other EU Member States, will want to acquire the citizenship of their country of residence - just to make sure to keep residence rights and all benefits derived from EU citizenship (which is tied to having nationality of a Member State of the EU).</description>
     </item>
     
   </channel>

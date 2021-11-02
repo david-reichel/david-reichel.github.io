@@ -1,34 +1,44 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Arbitrary Data Analysis</title>
-    <link>/</link>
-    <description>Recent content on Arbitrary Data Analysis</description>
+    <title>Measuring Rights</title>
+    <link>https://david-reichel.github.io/</link>
+    <description>Recent content on Measuring Rights</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-gb</language>
     <copyright>&amp;copy; Copyright by David Reichel</copyright>
-    <lastBuildDate>Sat, 28 Sep 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 02 Nov 2021 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://david-reichel.github.io/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
-      <title>test post citizenship acquisition of Brits in the EU</title>
-      <link>/posts/test-post-citizenship-acquisition-brits-eu/</link>
-      <pubDate>Sat, 28 Sep 2019 00:00:00 +0000</pubDate>
+      <title>Citizenship acquisition of Brits in the EU</title>
+      <link>https://david-reichel.github.io/posts/citizenship-acquisition-of-brits-in-the-eu/</link>
+      <pubDate>Tue, 02 Nov 2021 00:00:00 +0000</pubDate>
       
-      <guid>/posts/test-post-citizenship-acquisition-brits-eu/</guid>
-      <description>This is just a test postHi everyone. This is just a test post. I am trying to sort out how I could create a blog with R (using the blogdown package) on github pages. This description - among other great online resources - helped me doing it.
-To test if it works, I show below citizenship acquisitions of British people in other EU country before and after Brexit vote.</description>
+      <guid>https://david-reichel.github.io/posts/citizenship-acquisition-of-brits-in-the-eu/</guid>
+      <description>by David Reichel
+British citizens acquiring citizenship of an(other) EU Member StateAfter the Brexit vote, it was quite clear that many British people, who are living in other EU Member States, will want to acquire the citizenship of their country of residence - just to make sure to keep residence rights and all benefits derived from EU citizenship (which is tied to having nationality of a Member State of the EU).</description>
     </item>
     
     <item>
       <title>About</title>
-      <link>/about/</link>
-      <pubDate>Thu, 05 May 2016 21:48:51 -0700</pubDate>
+      <link>https://david-reichel.github.io/about/</link>
+      <pubDate>Sat, 09 Oct 2021 00:00:00 +0000</pubDate>
       
-      <guid>/about/</guid>
-      <description>This is a &amp;ldquo;hello world&amp;rdquo; example website for the blogdown package. The theme was forked from @jrutheiser/hugo-lithium-theme and modified by Yihui Xie.</description>
+      <guid>https://david-reichel.github.io/about/</guid>
+      <description>This blog is the result of me learning statistical analysis with R in free time. Whenever I come across a new data source, I enjoy looking into it. Yet often, I don&amp;rsquo;t really find enough time to do a fully fledged scientific analysis (for a paper or so). I use this blog to publish my data analysis, hoping that it is of interest to readers either working on data analysis or generally in the area of human rights.</description>
+    </item>
+    
+    <item>
+      <title>The ethical engineer - &#39;depends on what it is&#39;</title>
+      <link>https://david-reichel.github.io/posts/ethical-engineer/</link>
+      <pubDate>Sat, 09 Oct 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://david-reichel.github.io/posts/ethical-engineer/</guid>
+      <description>by David Reichel
+Ethical artificial intelligenceDiscussions around the use of artificial intelligence (AI) are everywhere. Pictures of robots, stories about artificial general intelligence (AGI) and the use of algorithms are featured almost daily in news papers these days. While one should not believe the hype, the past years have certainly seen major technological developments in the area of machine learning and other areas, which have contributed to many new opportunities, but at the same time present challenges for society.</description>
     </item>
     
   </channel>
