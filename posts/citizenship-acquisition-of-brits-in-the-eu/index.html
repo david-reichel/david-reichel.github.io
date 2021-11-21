@@ -2,6 +2,7 @@
 <html lang="en-gb">
 <head>
   <meta charset="utf-8" />
+  <meta name="google-site-verification" content="UUvZLCpTQqj5E_sh92pXnMPEjl06mH1htSliIZPVjjc" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
   
   <title>Citizenship acquisition of Brits in the EU</title>
@@ -88,13 +89,12 @@
 <p>After the Brexit vote, it was quite clear that many British people, who are living in other EU Member States, will want to acquire the citizenship of their country of residence - just to make sure to keep residence rights and all benefits derived from EU citizenship (which is tied to having nationality of a Member State of the EU).</p>
 <p>I once looked up the data and <a href="https://twitter.com/david_reichel/status/1104483255091384322">tweeted</a> the result, which gained some attention. So I thought this could be my first, short blog post. In this post, I first show how to produce the numbers (you can skip it if not interested), show the results and then discuss a few points in relation to citizenship acquisition (i.e. naturalisation) based on my previous research on the topic.</p>
 </div>
-<div id="how-to-access-data-on-citizenship-acqusitions-from-eurostat-and-build-a-graph" class="section level3">
-<h3>How to access data on citizenship acqusitions from Eurostat and build a graph</h3>
+<div id="how-to-access-data-on-citizenship-acquisitions-from-eurostat-and-build-a-graph" class="section level3">
+<h3>How to access data on citizenship acquisitions from Eurostat and build a graph</h3>
 <p>One good source to look into the effect of Brexit vote on citizenship acquisitions is using Eurostat data on citizenship acquisitions in all EU Member States by (former) British citizens. Eurostat provides readily harmonised data across European countries. Sometimes it takes longer for data to be available, because it requires a lot of work to put together harmonised data from many countries.</p>
 <p>I use the great R package <em>eurostat</em>.<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a> With this package, you can directly access the <a href="https://ec.europa.eu/eurostat/data/database">Eurostat database</a> to download the dataset directly into R. I downloaded the dataset <em>migr_acq</em>, which includes citizenship acquisions by previous citizenship. The analysis is straightforward. I filter for previous UK citizens, then filter for other selections and only keep EU countries. Here is the code to do that.</p>
-<pre class="r"><code>library(tidyverse)</code></pre>
-<pre><code>## Warning: Paket &#39;ggplot2&#39; wurde unter R Version 4.0.5 erstellt</code></pre>
-<pre class="r"><code>theme_set(theme_bw())
+<pre class="r"><code>library(tidyverse)
+theme_set(theme_bw())
 library(eurostat)
 
 # if you work on your code repeatedly, the best way is to save your table first and then load again
@@ -127,7 +127,7 @@ dat &lt;- dat %&gt;%
   group_by(time, year) %&gt;% 
   summarise(values = sum(values))</code></pre>
 <p>Now we plot the results. It shows the strong increase in acquisitions in the year of the Brexit vote and another strong increase in 2017. After another slight increase in 2018, the numbers almost double to about 30,000 in 2019.</p>
-<p>When I posted the data on Twitter in March 2019, the numbers for 2018 were not available. Based on the trend up to 2017, I assumed the numbers will continue to <em>skyrocket</em>. I was wrong, because in 2018, only a slight increase can be observed. However, at least, my prediction was right for 2019 :-)</p>
+<p>When I posted the data on Twitter in March 2019, the numbers for 2018 were not available. Based on the trend up to 2017, I assumed the numbers will continue to <em>skyrocket</em>. I was wrong, because in 2018, only a slight increase can be observed. However, at least, my prediction was right for 2019 :-) See the updated Figure below.</p>
 <p>If you are interested in how to do the animated graph, which I used in my tweet, check out the code <a href="https://github.com/david-reichel/citizenship-acquisitions-British-people-in-the-EU/blob/master/R_script_nat_brits_final.R">here</a>.</p>
 <pre class="r"><code># plot the result
 p1 &lt;- ggplot(dat) +
