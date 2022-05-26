@@ -7,10 +7,19 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-gb</language>
     <copyright>&amp;copy; Copyright by David Reichel</copyright>
-    <lastBuildDate>Tue, 02 Nov 2021 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 14 May 2022 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://david-reichel.github.io/categories/rstats/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Analysis of Vienna City Half Marathon results</title>
+      <link>https://david-reichel.github.io/posts/vcm-half-marathon/</link>
+      <pubDate>Sat, 14 May 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://david-reichel.github.io/posts/vcm-half-marathon/</guid>
+      <description>This is a special post. It is not linked to human rights or citizenship, but to data analysis and … running. Yes, I started running a lot during the pandemic as a way to deal with stressful times, including working from home and home schooling of kids etc. I never liked running much, but in the past years, I really started enjoying it. Already in 2021, I joined the marathon relay team of the Fundamental Rights Agency at the Vienna City Marathon (VCM), where I ran the first leg of 15.</description>
+    </item>
     
     <item>
       <title>Citizenship acquisition of Brits in the EU</title>
