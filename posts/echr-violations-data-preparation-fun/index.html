@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="en-gb">
+<head>
+  <meta charset="utf-8" />
+  <meta name="google-site-verification" content="UUvZLCpTQqj5E_sh92pXnMPEjl06mH1htSliIZPVjjc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
+  
+  <title>A data scientist&#39;s tale - ECHR violations data preparation</title>
+  <meta property="og:title" content="A data scientist&#39;s tale - ECHR violations data preparation" />
+  <meta name="twitter:title" content="A data scientist&#39;s tale - ECHR violations data preparation" />
+  
+
+  
+  <meta name="description" content="A blog about data, analysis and human rights issues (with R code)">
+  <meta property="og:description" content="A blog about data, analysis and human rights issues (with R code)">
+  <meta name="twitter:description" content="A blog about data, analysis and human rights issues (with R code)">
+  
+
+  <meta name="author" content="David Reichel"/>
+  <meta property="og:site_name" content="Measuring Rights" />
+  <meta property="og:url" content="https://david-reichel.github.io/posts/echr-violations-data-preparation-fun/" />
+
+  
+  <meta name="twitter:card" content="summary" />
+
+  
+  <meta name="twitter:site" content="@david_reichel" />
+  <meta name="twitter:creator" content="@david_reichel" />
+  
+
+  
+  <meta property="og:type" content="article" />
+  
+  
+  
+  <meta name="generator" content="Hugo 0.55.6" /><link rel="stylesheet" href="https://david-reichel.github.io/css/style.css" />
+  
+  
+  
+  <script type="text/javascript" src="https://david-reichel.github.io/js/bundle.js"></script>
+  <script defer type="text/javascript" src="https://api.pirsch.io/pirsch.js"
+    id="pirschjs"
+    data-code="pIqqBFBCe78rGCyLNtnfZntn8pJk2PmL"></script>
+  
+
+</head>
+
+<body>
+  <a href="#main" class="skip-link p-screen-reader-text">Skip to content</a>
+  <svg xmlns="http://www.w3.org/2000/svg" style="display: none;" aria-hidden="true"> <symbol id="icon-500px" viewBox="0 0 16 16"><g> <path d="M3.953 10.512a5.24 5.24 0 0 0 6.996 3.141c.625-.262 1.184-.641 1.666-1.122s.859-1.041 1.122-1.666c.272-.647.412-1.331.412-2.037s-.137-1.394-.412-2.037c-.262-.625-.641-1.184-1.122-1.666s-1.041-.859-1.666-1.122a5.226 5.226 0 0 0-2.037-.413c-.716 0-1.431.144-2.066.413-.509.216-1.372.769-1.875 1.291l-.003.003V.984h7.241c.262-.003.262-.372.262-.491 0-.122 0-.487-.266-.491H4.377a.343.343 0 0 0-.344.341v6.066c0 .197.244.338.472.384.444.094.544-.047.653-.197l.016-.019c.166-.247.681-.766.688-.772a4.262 4.262 0 0 1 3.037-1.25c1.147 0 2.222.444 3.028 1.25a4.245 4.245 0 0 1 1.256 3.019 4.236 4.236 0 0 1-1.25 3.019 4.336 4.336 0 0 1-3.047 1.25 4.136 4.136 0 0 1-2.159-.597l.003-3.688c0-.491.213-1.028.572-1.431a2.09 2.09 0 0 1 1.588-.716c.594 0 1.15.225 1.566.634.409.406.637.95.637 1.528a2.179 2.179 0 0 1-2.206 2.197c-.238 0-.672-.106-.691-.109-.25-.075-.356.272-.391.387-.134.441.069.528.109.541.397.125.659.147 1.003.147a3.173 3.173 0 0 0 3.169-3.169c0-1.734-1.422-3.144-3.166-3.144-.856 0-1.659.328-2.263.919-.575.566-.903 1.319-.903 2.069v.019c-.003.094-.003 2.306-.006 3.031l-.003-.003c-.328-.363-.653-.919-.869-1.488-.084-.222-.275-.184-.534-.103-.125.034-.469.141-.391.394zm3.722-.865c0 .106.097.2.156.253l.019.019c.1.097.194.147.281.147a.181.181 0 0 0 .131-.05c.044-.041.537-.544.588-.591l.553.55c.05.056.106.088.172.088.088 0 .184-.053.284-.156.238-.244.119-.375.063-.438l-.559-.559.584-.588c.128-.137.016-.284-.097-.397-.162-.162-.322-.206-.422-.112l-.581.581-.588-.588a.16.16 0 0 0-.113-.047c-.078 0-.172.053-.275.156-.181.181-.219.306-.125.406l.588.584-.584.584c-.053.05-.078.103-.075.156zm1.278-7.931c-.938 0-1.938.191-2.669.506a.207.207 0 0 0-.134.181.753.753 0 0 0 .069.337c.047.116.166.425.4.334a6.689 6.689 0 0 1 2.334-.444 6.35 6.35 0 0 1 2.469.497c.622.263 1.206.644 1.844 1.194a.22.22 0 0 0 .147.059c.125 0 .244-.122.347-.237.169-.191.287-.35.119-.509a6.858 6.858 0 0 0-2.1-1.356 7.326 7.326 0 0 0-2.825-.563zM14.006 13.3c-.113-.113-.209-.178-.294-.203s-.162-.006-.222.053l-.056.056a6.32 6.32 0 0 1-6.938 1.356 6.336 6.336 0 0 1-2.013-1.356 6.046 6.046 0 0 1-1.356-2.012c-.288-.713-.381-1.247-.413-1.422-.003-.016-.006-.028-.006-.037-.041-.206-.231-.222-.503-.178-.112.019-.459.072-.428.319v.006a7.261 7.261 0 0 0 2.04 3.994 7.266 7.266 0 0 0 10.288 0l.059-.059c.069-.084.134-.225-.159-.516z"/> </g></symbol> <symbol id="icon-codepen" viewBox="0 0 16 16"><g> <path d="M14.777 5.751l-7-4.667a.5.5 0 0 0-.555 0l-7 4.667a.501.501 0 0 0-.223.416v4.667c0 .167.084.323.223.416l7 4.667a.5.5 0 0 0 .554 0l7-4.667a.501.501 0 0 0 .223-.416V6.167a.501.501 0 0 0-.223-.416zM7.5 10.232L4.901 8.5 7.5 6.768 10.099 8.5 7.5 10.232zM8 5.899V2.434l5.599 3.732L11 7.898l-3-2zm-1 0l-3 2-2.599-1.732L7 2.435V5.9zM3.099 8.5L1 9.899V7.101L3.099 8.5zM4 9.101l3 2v3.465l-5.599-3.732L4 9.102zm4 2l3-2 2.599 1.732L8 14.565V11.1zM11.901 8.5L14 7.101v2.798L11.901 8.5z"/> </g></symbol> <symbol id="icon-dribbble" viewBox="0 0 16 16"><g> <path d="M8 16c-4.412 0-8-3.588-8-8s3.587-8 8-8c4.412 0 8 3.587 8 8s-3.588 8-8 8zm6.747-6.906c-.234-.075-2.116-.634-4.256-.291a29.7 29.7 0 0 1 1.328 4.872 6.845 6.845 0 0 0 2.928-4.581zM10.669 14.3c-.103-.6-.497-2.688-1.456-5.181-.016.006-.031.009-.044.016-3.856 1.344-5.241 4.016-5.362 4.266a6.807 6.807 0 0 0 6.863.9zm-7.747-1.722c.156-.266 2.031-3.369 5.553-4.509a7.04 7.04 0 0 1 .269-.081 24.04 24.04 0 0 0-.553-1.159c-3.409 1.022-6.722.978-7.022.975-.003.069-.003.138-.003.209 0 1.753.666 3.356 1.756 4.566zM1.313 6.609c.306.003 3.122.016 6.319-.831a43.092 43.092 0 0 0-2.534-3.953 6.854 6.854 0 0 0-3.784 4.784zM6.4 1.366a36.612 36.612 0 0 1 2.55 4c2.431-.909 3.459-2.294 3.581-2.469A6.799 6.799 0 0 0 6.4 1.366zm6.891 2.325c-.144.194-1.291 1.663-3.816 2.694.159.325.313.656.453.991.05.119.1.234.147.353 2.275-.284 4.534.172 4.759.219a6.816 6.816 0 0 0-1.544-4.256z"/> </g></symbol> <symbol id="icon-facebook" viewBox="0 0 16 16"><g> <path d="M9.5 3H12V0H9.5C7.57 0 6 1.57 6 3.5V5H4v3h2v8h3V8h2.5l.5-3H9V3.5c0-.271.229-.5.5-.5z"/> </g></symbol> <symbol id="icon-feed" viewBox="0 0 16 16"><g> <path d="M2.13 11.733c-1.175 0-2.13.958-2.13 2.126 0 1.174.955 2.122 2.13 2.122a2.126 2.126 0 0 0 2.133-2.122 2.133 2.133 0 0 0-2.133-2.126zM.002 5.436v3.067c1.997 0 3.874.781 5.288 2.196a7.45 7.45 0 0 1 2.192 5.302h3.08c0-5.825-4.739-10.564-10.56-10.564zM.006 0v3.068C7.128 3.068 12.924 8.87 12.924 16H16C16 7.18 8.824 0 .006 0z"/> </g></symbol> <symbol id="icon-flickr" viewBox="0 0 16 16"><g> <path d="M0 8.5a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0zm9 0a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0z"/> </g></symbol> <symbol id="icon-github" viewBox="0 0 16 16"><g> <path d="M8 .198a8 8 0 0 0-2.529 15.591c.4.074.547-.174.547-.385 0-.191-.008-.821-.011-1.489-2.226.484-2.695-.944-2.695-.944-.364-.925-.888-1.171-.888-1.171-.726-.497.055-.486.055-.486.803.056 1.226.824 1.226.824.714 1.223 1.872.869 2.328.665.072-.517.279-.87.508-1.07-1.777-.202-3.645-.888-3.645-3.954 0-.873.313-1.587.824-2.147-.083-.202-.357-1.015.077-2.117 0 0 .672-.215 2.201.82A7.672 7.672 0 0 1 8 4.066c.68.003 1.365.092 2.004.269 1.527-1.035 2.198-.82 2.198-.82.435 1.102.162 1.916.079 2.117.513.56.823 1.274.823 2.147 0 3.073-1.872 3.749-3.653 3.947.287.248.543.735.543 1.481 0 1.07-.009 1.932-.009 2.195 0 .213.144.462.55.384A8 8 0 0 0 8.001.196z"/> </g></symbol> <symbol id="icon-gitlab" viewBox="0 0 28 28"><g> <path d="M1.625 11.031L14 26.89.437 17.046a1.092 1.092 0 0 1-.391-1.203l1.578-4.813zm7.219 0h10.313L14.001 26.89zM5.75 1.469l3.094 9.562H1.625l3.094-9.562a.548.548 0 0 1 1.031 0zm20.625 9.562l1.578 4.813a1.09 1.09 0 0 1-.391 1.203l-13.563 9.844 12.375-15.859zm0 0h-7.219l3.094-9.562a.548.548 0 0 1 1.031 0z"/> </g></symbol> <symbol id="icon-google-plus" viewBox="0 0 16 16"><g> <path d="M5.091 7.147v1.747h2.888c-.116.75-.872 2.197-2.888 2.197-1.737 0-3.156-1.441-3.156-3.216s1.419-3.216 3.156-3.216c.991 0 1.65.422 2.028.784L8.5 4.112c-.888-.828-2.037-1.331-3.409-1.331C2.275 2.784 0 5.059 0 7.875s2.275 5.091 5.091 5.091c2.937 0 4.888-2.066 4.888-4.975 0-.334-.037-.591-.081-.844H5.092zM16 7h-1.5V5.5H13V7h-1.5v1.5H13V10h1.5V8.5H16z"/> </g></symbol> <symbol id="icon-instagram" viewBox="0 0 22 22"><g> <path d="M15.445 0H6.554A6.559 6.559 0 0 0 0 6.554v8.891A6.559 6.559 0 0 0 6.554 22h8.891a6.56 6.56 0 0 0 6.554-6.555V6.554A6.557 6.557 0 0 0 15.445 0zm4.342 15.445a4.343 4.343 0 0 1-4.342 4.342H6.554a4.341 4.341 0 0 1-4.341-4.342V6.554a4.34 4.34 0 0 1 4.341-4.341h8.891a4.342 4.342 0 0 1 4.341 4.341l.001 8.891z"/> <path d="M11 5.312A5.693 5.693 0 0 0 5.312 11 5.694 5.694 0 0 0 11 16.688 5.694 5.694 0 0 0 16.688 11 5.693 5.693 0 0 0 11 5.312zm0 9.163a3.475 3.475 0 1 1-.001-6.95 3.475 3.475 0 0 1 .001 6.95zm5.7-10.484a1.363 1.363 0 1 1-1.364 1.364c0-.752.51-1.364 1.364-1.364z"/> </g></symbol> <symbol id="icon-linkedin" viewBox="0 0 16 16"><g> <path d="M6 6h2.767v1.418h.04C9.192 6.727 10.134 6 11.539 6 14.46 6 15 7.818 15 10.183V15h-2.885v-4.27c0-1.018-.021-2.329-1.5-2.329-1.502 0-1.732 1.109-1.732 2.255V15H6V6zM1 6h3v9H1V6zM4 3.5a1.5 1.5 0 1 1-3.001-.001A1.5 1.5 0 0 1 4 3.5z"/> </g></symbol> <symbol id="icon-mail" viewBox="0 0 22 18"><g> <path fill="#000" d="M0 17.225V.776h22v16.447H0v.002zm3.011-1.815h15.978l-5.111-5.115L11 13.179l-2.877-2.883-5.112 5.114zm-1.216-1.275l5.077-5.09L1.795 3.98v10.155zm13.332-5.09l5.079 5.09V3.979l-5.079 5.066zm-4.126 1.588l8.022-8.027-16.045-.001 8.023 8.028z"/> </g></symbol> <symbol id="icon-medium" viewBox="0 0 24 24"><g> <path d="M22.085 4.733L24 2.901V2.5h-6.634l-4.728 11.768L7.259 2.5H.303v.401L2.54 5.594c.218.199.332.49.303.783V16.96c.069.381-.055.773-.323 1.05L0 21.064v.396h7.145v-.401l-2.52-3.049a1.244 1.244 0 0 1-.347-1.05V7.806l6.272 13.659h.729l5.393-13.659v10.881c0 .287 0 .346-.188.534l-1.94 1.877v.402h9.412v-.401l-1.87-1.831a.556.556 0 0 1-.214-.534V5.267a.554.554 0 0 1 .213-.534z"/> </g></symbol> <symbol id="icon-npm" viewBox="0 0 16 16"><g> <path d="M0 0v16h16V0H0zm13 13h-2V5H8v8H3V3h10v10z"/> </g></symbol> <symbol id="icon-pinterest" viewBox="0 0 16 16"><g> <path d="M8 1.069a6.93 6.93 0 0 0-2.525 13.384c-.059-.547-.116-1.391.025-1.988.125-.541.813-3.444.813-3.444s-.206-.416-.206-1.028c0-.963.559-1.684 1.253-1.684.591 0 .878.444.878.975 0 .594-.378 1.484-.575 2.306-.166.691.344 1.253 1.025 1.253 1.231 0 2.178-1.3 2.178-3.175 0-1.659-1.194-2.819-2.894-2.819-1.972 0-3.128 1.478-3.128 3.009 0 .597.228 1.234.516 1.581.056.069.066.128.047.2a95.89 95.89 0 0 1-.194.787c-.031.128-.1.153-.231.094-.866-.403-1.406-1.669-1.406-2.684 0-2.188 1.587-4.194 4.578-4.194 2.403 0 4.272 1.712 4.272 4.003 0 2.388-1.506 4.313-3.597 4.313-.703 0-1.362-.366-1.588-.797 0 0-.347 1.322-.431 1.647-.156.603-.578 1.356-.862 1.816a6.93 6.93 0 0 0 8.984-6.622 6.931 6.931 0 0 0-6.931-6.934z"/> </g></symbol> <symbol id="icon-search" viewBox="0 0 16 16"><g> <path d="M15.504 13.616l-3.79-3.223c-.392-.353-.811-.514-1.149-.499a6 6 0 1 0-.672.672c-.016.338.146.757.499 1.149l3.223 3.79c.552.613 1.453.665 2.003.115s.498-1.452-.115-2.003zM6 10a4 4 0 1 1 0-8 4 4 0 0 1 0 8z"/> </g></symbol> <symbol id="icon-tumblr" viewBox="0 0 16 16"><g> <path d="M9.001 7v3.659c0 .928-.012 1.463.086 1.727.098.262.342.534.609.691.354.212.758.318 1.214.318.81 0 1.289-.107 2.09-.633v2.405a9.089 9.089 0 0 1-1.833.639A7.93 7.93 0 0 1 9.369 16a4.9 4.9 0 0 1-1.725-.276 4.195 4.195 0 0 1-1.438-.79c-.398-.343-.672-.706-.826-1.091s-.23-.944-.23-1.676V6.556H3.003V4.29c.628-.204 1.331-.497 1.778-.877a4.386 4.386 0 0 0 1.08-1.374C6.133 1.505 6.32.825 6.422 0h2.579v4H13v3H9.001z"/> </g></symbol> <symbol id="icon-twitter" viewBox="0 0 16 16"><g> <path d="M16 3.538a6.461 6.461 0 0 1-1.884.516 3.301 3.301 0 0 0 1.444-1.816 6.607 6.607 0 0 1-2.084.797 3.28 3.28 0 0 0-2.397-1.034 3.28 3.28 0 0 0-3.197 4.028 9.321 9.321 0 0 1-6.766-3.431 3.284 3.284 0 0 0 1.015 4.381A3.301 3.301 0 0 1 .643 6.57v.041A3.283 3.283 0 0 0 3.277 9.83a3.291 3.291 0 0 1-1.485.057 3.293 3.293 0 0 0 3.066 2.281 6.586 6.586 0 0 1-4.862 1.359 9.286 9.286 0 0 0 5.034 1.475c6.037 0 9.341-5.003 9.341-9.341 0-.144-.003-.284-.009-.425a6.59 6.59 0 0 0 1.637-1.697z"/> </g></symbol> <symbol id="icon-vimeo" viewBox="0 0 16 16"><g> <path d="M15.994 4.281c-.072 1.556-1.159 3.691-3.263 6.397-2.175 2.825-4.016 4.241-5.522 4.241-.931 0-1.722-.859-2.366-2.581-.431-1.578-.859-3.156-1.291-4.734-.478-1.722-.991-2.581-1.541-2.581-.119 0-.538.253-1.256.753l-.753-.969c.791-.694 1.569-1.388 2.334-2.081 1.053-.909 1.844-1.387 2.372-1.438 1.244-.119 2.013.731 2.3 2.553.309 1.966.525 3.188.647 3.666.359 1.631.753 2.447 1.184 2.447.334 0 .838-.528 1.509-1.588.669-1.056 1.028-1.862 1.078-2.416.097-.912-.262-1.372-1.078-1.372a2.98 2.98 0 0 0-1.184.263c.787-2.575 2.287-3.825 4.506-3.753 1.641.044 2.416 1.109 2.322 3.194z"/> </g></symbol> <symbol id="icon-wordpress" viewBox="0 0 16 16"><g> <path d="M2 8c0 2.313 1.38 4.312 3.382 5.259L2.52 5.622A5.693 5.693 0 0 0 2 8zm10.05-.295c0-.722-.266-1.222-.495-1.612-.304-.482-.589-.889-.589-1.371 0-.537.418-1.037 1.008-1.037.027 0 .052.003.078.005A6.064 6.064 0 0 0 8 2.156 6.036 6.036 0 0 0 2.987 4.79c.141.004.274.007.386.007.627 0 1.599-.074 1.599-.074.323-.018.361.444.038.482 0 0-.325.037-.687.055l2.185 6.33 1.313-3.835-.935-2.495a12.304 12.304 0 0 1-.629-.055c-.323-.019-.285-.5.038-.482 0 0 .991.074 1.58.074.627 0 1.599-.074 1.599-.074.323-.018.362.444.038.482 0 0-.326.037-.687.055l2.168 6.282.599-1.947c.259-.809.457-1.389.457-1.889zm-3.945.806l-1.8 5.095a6.148 6.148 0 0 0 3.687-.093.52.52 0 0 1-.043-.081L8.105 8.511zm5.16-3.315c.026.186.04.386.04.601 0 .593-.114 1.259-.456 2.093l-1.833 5.16c1.784-1.013 2.983-2.895 2.983-5.051a5.697 5.697 0 0 0-.735-2.803zM8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0zm0 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14z"/> </g></symbol> <symbol id="icon-youtube" viewBox="0 0 16 16"><g> <path d="M15.841 4.8s-.156-1.103-.637-1.587c-.609-.637-1.291-.641-1.603-.678-2.237-.163-5.597-.163-5.597-.163h-.006s-3.359 0-5.597.163c-.313.038-.994.041-1.603.678C.317 3.697.164 4.8.164 4.8S.005 6.094.005 7.391v1.213c0 1.294.159 2.591.159 2.591s.156 1.103.634 1.588c.609.637 1.409.616 1.766.684 1.281.122 5.441.159 5.441.159s3.363-.006 5.6-.166c.313-.037.994-.041 1.603-.678.481-.484.637-1.588.637-1.588s.159-1.294.159-2.591V7.39c-.003-1.294-.162-2.591-.162-2.591zm-9.494 5.275V5.578l4.322 2.256-4.322 2.241z"/> </g></symbol></svg>
+  <header class="l-header">
+    
+    <p class="c-title p-title"><a href="https://david-reichel.github.io/" class="p-title__link">Measuring Rights</a></p>
+    
+    
+    <p class="p-subtitle">
+      A blog about data, analysis and human rights issues (with R code)
+    </p>
+    
+  </header>
+  <main id="main" class="l-main">
+
+
+<article class="p-article">
+  <header>
+    <h1>A data scientist&#39;s tale - ECHR violations data preparation</h1>
+    <div>
+      <div class="c-time">
+        Posted on
+        <time datetime="2022-06-18T00:00:00Z">
+          Jun 18, 2022
+        </time>
+      </div>
+      
+      <a href="https://david-reichel.github.io/tags/rstats" class="c-tag">rstats</a>
+      
+      <a href="https://david-reichel.github.io/tags/human-rights" class="c-tag">human rights</a>
+      
+    </div>
+  </header>
+  
+  <section id="js-article" class="p-article__body">
+    
+
+
+<p>Hello dear reader!</p>
+<p>This post tells a data scientist’s story about working with (human rights violations) data. The post is not about showing results of human rights violations (some are of course included), but about experiences when preparing data for analysis. It is often said that 80% of the work of data analyst is data preparation. So, this post tells you what is usually not shown, the struggle to get a dataset into the right shape for analysis. As Hadley Wickham says - based on a famous quote of Leo Tolstoi about happy families: <em>Tidy datasets are all alike, but every messy dataset is messy in its own way.</em><a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a></p>
+<p>I often work with human rights data. One of the most important human rights institutions is the European Court of Human Rights (ECtHR), which rules on individual or state applications alleging violations of the rights set out in the European Convention on Human Rights (ECHR). In the past years the court has stepped up its efforts to provide data on judgments, on human rights violations, in its <em>HUDOC</em> database. So, I made an effort and downloaded data on human rights violations from the <a href="http://hudoc.echr.coe.int/eng#%7B%22documentcollectionid2%22:%5B%22GRANDCHAMBER%22,%22CHAMBER%22%5D%7D">Council of Europe HUDOC database</a>, including all Chamber and Grand Chamber judgments. Not many people have analysed those data quantitatively, so this can nicely add to our understanding of human rights violations in Europe.</p>
+<div id="data-collection---the-hudoc-database-of-judgments" class="section level1">
+<h1>Data collection - the <em>HUDOC</em> database of judgments</h1>
+<p>The first challenge was that the database only allows you to download 500 cases at once. There are, however, many thousands of cases. I took advantage of the fact that the download link from the database changes according to the filter you set. I made a systematic sub-selection of the database - making sure they stay below 500 cases - and loop through the links to download data and put them together later on. For the years 2007 to 2020, I downloaded quarterly data, by setting the time period of judgments. Let’s load the full dataset and look at it. Should be ready for analysis, right? … not really</p>
+</div>
+<div id="data-preparation" class="section level1">
+<h1>Data preparation</h1>
+<p>In the code below, I load the compiled dataset of ECtHR judgments between 2007 and 2020, as downloaded from the database.</p>
+<pre class="r"><code>library(tidyverse)</code></pre>
+<pre><code>## -- Attaching packages --------------------------------------- tidyverse 1.3.0 --</code></pre>
+<pre><code>## v ggplot2 3.3.5     v purrr   0.3.4
+## v tibble  3.0.5     v dplyr   1.0.3
+## v tidyr   1.1.2     v stringr 1.4.0
+## v readr   1.4.0     v forcats 0.5.1</code></pre>
+<pre><code>## Warning: Paket &#39;ggplot2&#39; wurde unter R Version 4.0.5 erstellt</code></pre>
+<pre><code>## -- Conflicts ------------------------------------------ tidyverse_conflicts() --
+## x dplyr::filter() masks stats::filter()
+## x dplyr::lag()    masks stats::lag()</code></pre>
+<pre class="r"><code>library(countrycode)
+library(knitr)
+
+# put your path into the object &#39;pth&#39;
+dat &lt;- read.csv(paste0(pth, &quot;hudoc_final1-2021-03-28.csv&quot;), stringsAsFactors = FALSE)
+
+head(dat) %&gt;% kable()</code></pre>
+<table>
+<colgroup>
+<col width="8%" />
+<col width="3%" />
+<col width="2%" />
+<col width="4%" />
+<col width="2%" />
+<col width="74%" />
+<col width="2%" />
+<col width="1%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">Document.Title</th>
+<th align="left">Application.Number</th>
+<th align="left">Document.Type</th>
+<th align="left">Originating.Body</th>
+<th align="left">Date</th>
+<th align="left">Conclusion</th>
+<th align="left">datetype</th>
+<th align="right">year</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">CASE OF ANHEUSER-BUSCH INC. v. PORTUGAL</td>
+<td align="left">73049/01</td>
+<td align="left">HEJUD</td>
+<td align="left">Court (Grand Chamber)</td>
+<td align="left">11/01/2007</td>
+<td align="left">No violation of P1-1</td>
+<td align="left">dd/mm/yyyy</td>
+<td align="right">2007</td>
+</tr>
+<tr class="even">
+<td align="left">CASE OF SISOJEVA AND OTHERS v. LATVIA</td>
+<td align="left">60654/00</td>
+<td align="left">HEJUD</td>
+<td align="left">Court (Grand Chamber)</td>
+<td align="left">15/01/2007</td>
+<td align="left">No violation of Article 8 - Right to respect for private and family life (Article 8-1 - Respect for family life);No violation of Article 34 - Individual applications (Article 34 - Hinder the exercise of the right of petition)</td>
+<td align="left">dd/mm/yyyy</td>
+<td align="right">2007</td>
+</tr>
+<tr class="odd">
+<td align="left">CASE OF TATISHVILI v. RUSSIA</td>
+<td align="left">1509/02</td>
+<td align="left">HEJUD</td>
+<td align="left">Court (First Section)</td>
+<td align="left">22/02/2007</td>
+<td align="left">Violation of P4-2;Violation of Art. 6-1;Pecuniary damage - claim dismissed;Non-pecuniary damage - financial award;Costs and expenses partial award - domestic and Convention proceedings</td>
+<td align="left">dd/mm/yyyy</td>
+<td align="right">2007</td>
+</tr>
+<tr class="even">
+<td align="left">CASE OF TYSIÄ„C v. POLAND</td>
+<td align="left">5410/03</td>
+<td align="left">HEJUD</td>
+<td align="left">Court (Fourth Section)</td>
+<td align="left">20/03/2007</td>
+<td align="left">Preliminary objection dismissed (Article 35-1 - Exhaustion of domestic remedies);No violation of Article 3 - Prohibition of torture (Article 3 - Degrading treatment;Inhuman treatment);Violation of Article 8 - Right to respect for private and family life (Article 8-1 - Respect for private life);Pecuniary damage - claim dismissed;Non-pecuniary damage - award</td>
+<td align="left">dd/mm/yyyy</td>
+<td align="right">2007</td>
+</tr>
+<tr class="odd">
+<td align="left">CASE OF AKPINAR AND ALTUN v. TURKEY</td>
+<td align="left">56760/00</td>
+<td align="left">HEJUD</td>
+<td align="left">Court (Second Section)</td>
+<td align="left">27/02/2007</td>
+<td align="left">No violation of Art. 2 (substantive aspect);Violation of Art. 2 (procedural aspect);No violation of Art. 3;Violation of Art. 3;Not necessary to examine Art. 3 (procedural aspect);Pecuniary damage - claim dismissed;Non-pecuniary damage - financial award;Costs and expenses award - Convention proceedings</td>
+<td align="left">dd/mm/yyyy</td>
+<td align="right">2007</td>
+</tr>
+<tr class="even">
+<td align="left">CASE OF CASTRAVET v. MOLDOVA</td>
+<td align="left">23393/05</td>
+<td align="left">HEJUD</td>
+<td align="left">Court (Fourth Section)</td>
+<td align="left">13/03/2007</td>
+<td align="left">Preliminary objection dismissed (non-exhaustion of domestic remedies);Violation of Art. 5-3;Violation of Art. 5-4;Non-pecuniary damage - financial claim;Costs and expenses partial award</td>
+<td align="left">dd/mm/yyyy</td>
+<td align="right">2007</td>
+</tr>
+</tbody>
+</table>
+<p>Oh, it includes a lot of information. Document title, application number, document type, originating body, date and conclusion. But no direct information on whether a violation occured, or not, and which article was violated. Also no concrete country column etc. All this information is provided in a more or less structured way under ‘Conclusion’. Let’s we what we can do about it. First we need to get a sense of the structure of the dataset.</p>
+<pre class="r"><code>nobs &lt;- nrow(dat)
+mn &lt;- min(dat$year, na.rm = TRUE) 
+mx &lt;- max(dat$year, na.rm = TRUE)
+dupno &lt;- sum(duplicated(dat$Application.Number))
+dups &lt;- sum(duplicated(dat))
+
+uapp &lt;- length(unique(dat$Application.Number))
+
+emptyconclusions &lt;- dat %&gt;% dplyr::filter(Conclusion == &quot;&quot;) %&gt;% nrow()
+
+dat$Date &lt;- str_sub(dat$Date, 1, 10) %&gt;% as.Date(format = &quot;%d/%m/%Y&quot;)
+dat$id &lt;- 1:nrow(dat)
+
+# check on duplicated application numbers
+dups &lt;- dat %&gt;%
+  dplyr::filter(Conclusion != &quot;&quot;) %&gt;%
+  group_by(Application.Number) %&gt;%
+  mutate(nApps = n()) %&gt;%
+  ungroup() %&gt;%
+  dplyr::filter(nApps &gt; 1) %&gt;%
+  arrange(Application.Number)
+
+# we have 
+# number of cases with more than one conclusion
+morecons &lt;- length(unique(dups$Application.Number))
+
+# summary(dups$nApps)
+
+# they range from 2 to 4
+rm(dups)</code></pre>
+<p>There are 12282 rows and 11779 unique application numbers in the data. The data are from 2007 to 2020.</p>
+<p>The dataset also includes several cases without any information in the conclusions. These are 200 cases. I delete all cases, where no conclusions are provided in the database.</p>
+<p>Then, we have 385 cases with more than one conclusion. This includes cases that went on to the Grand Chamber. For ease of analysis, I only keep the most recent decisions.</p>
+<p>Finally, I’ll save a random selection of cases in a separate file, which I can view and follow through the data transformation process. This is needed because we need quite some data wrangling before the dataset is ready to use for analysis.</p>
+<pre class="r"><code>dat &lt;- dat %&gt;%
+  dplyr::filter(Conclusion != &quot;&quot;) # concerns 200 cases, where there is no text in the conclusions
+
+dat &lt;- dat %&gt;%
+  group_by(Application.Number) %&gt;%
+  mutate(nApps = n(),
+         maxDate = max(Date)) %&gt;%
+  ungroup() %&gt;%
+  arrange(Application.Number, Date) %&gt;% # view()
+  dplyr::filter(Date == maxDate) %&gt;%
+  dplyr::select(-nApps, -maxDate)
+
+nobs2 &lt;- nrow(dat)
+# how many cases left with more than one decision
+nobs2-length(unique(dat$Application.Number))</code></pre>
+<pre><code>## [1] 1</code></pre>
+<pre class="r"><code># follow:
+# 24322/02 poland no viol 5 and viol 8
+# 69582/12 romania no viol 3 and viol 3
+# dat[dat$Application.Number == &quot;24322/02&quot;, ]
+# and a random number of three other cases sample(dat$Application.Number, 6)
+
+# save physical file for checks:
+checks1 &lt;- dat %&gt;% dplyr::filter(Application.Number %in% c(&quot;24322/02&quot;, &quot;69582/12&quot;, &quot;35312/02&quot;,
+                                         &quot;33210/07;41866/08&quot;, &quot;37715/11&quot;, &quot;12306/04&quot;,
+                                         &quot;81277/12&quot;, &quot;44753/12&quot;))
+# write_csv2(checks1, &quot;violation_checks2.csv&quot;)</code></pre>
+<p>We are left with 11685 cases.</p>
+<p>Now we need some tidying up and preparation of variables, including the date format, and identifying the names of countries. Careful attention is needed for two countries, which often have different ISO2 codes. The United Kingdom (UK) or sometimes Great Britain (GB) (I know there is an important difference. British people explained it to me several times, but I always forget it … it does not matter for country level analysis anyway). Addtionally, the official two letter abbreviation used in the EU for Greece is EL, but sometimes also used as GR. The database uses GB and GR, but we need to be careful for example when matching with Eurostat data (where UK and EL is used).</p>
+<p>To have a column that indicates the country covered, I have to create a list of country names, paste it into a string of country names separated by | (OR) to detect which country is covered. This is needed because in some cases, there is more than one country. As there is no clear country column, I detect the name from the conclusion. This requires some checking and string detection. Fortunately, the way countries are named in the conclusions is very consistent, with only a few exceptions.</p>
+<pre class="r"><code>dat$Document.Title &lt;- tolower(dat$Document.Title)
+
+COElist &lt;- c(&quot;AL&quot;, &quot;AD&quot;, &quot;AM&quot;, &quot;AT&quot;, &quot;AZ&quot;, &quot;BE&quot;, &quot;BA&quot;, &quot;BG&quot;, &quot;HR&quot;, &quot;CY&quot;, &quot;CZ&quot;, &quot;DK&quot;, &quot;EE&quot;, &quot;FI&quot;,
+             &quot;FR&quot;, &quot;GE&quot;, &quot;DE&quot;, &quot;GR&quot;, &quot;HU&quot;, &quot;IS&quot;, &quot;IE&quot;, &quot;IT&quot;, &quot;LV&quot;, &quot;LI&quot;, &quot;LT&quot;, &quot;LU&quot;, &quot;MT&quot;, &quot;MD&quot;,
+             &quot;MC&quot;, &quot;ME&quot;, &quot;NL&quot;, &quot;NO&quot;, &quot;PL&quot;, &quot;PT&quot;, &quot;RO&quot;, &quot;RU&quot;, &quot;SM&quot;, &quot;RS&quot;, &quot;SK&quot;, &quot;SI&quot;, &quot;ES&quot;, &quot;SE&quot;,
+             &quot;CH&quot;, &quot;MK&quot;, &quot;TR&quot;, &quot;UA&quot;, &quot;GB&quot;)
+# yes still including Russia, the biggest human rights violator of the CoE.
+
+COElist2 &lt;- countrycode(COElist, &quot;iso2c&quot;, &quot;country.name&quot;)
+COElist2[COElist2 == &quot;Macedonia, the former Yugoslav Republic of&quot;] &lt;- &quot;Macedonia&quot; 
+# actually now called &quot;North Macedonia&quot;
+COElist2[COElist2 == &quot;Russian Federation&quot;] &lt;- &quot;Russia&quot;
+COElist2[COElist2 == &quot;Moldova, Republic of&quot;] &lt;- &quot;Moldova&quot;
+COElist2[COElist2 == &quot;Czechia&quot;] &lt;- &quot;Czech Republic&quot;
+COElist2[COElist2 == &quot;Bosnia &amp; Herzegovina&quot;] &lt;- &quot;Bosnia and Herzegovina&quot;</code></pre>
+<p>There are up to seven countries in one case covered. In the code below, I assign a separate column per country and them make each of them a separate row in the dataset. There is surely a nicer way to do this, but who cares if it works.</p>
+<pre class="r"><code>cs &lt;- str_c(COElist2, collapse = &quot;|&quot;)
+
+country &lt;- str_extract_all(dat$Document.Title, tolower(cs), simplify = TRUE)
+
+dat$country1 &lt;- country[,1]
+dat$country2 &lt;- country[,2]
+dat$country3 &lt;- country[,3]
+dat$country4 &lt;- country[,4]
+dat$country5 &lt;- country[,5]
+dat$country6 &lt;- country[,6]
+dat$country7 &lt;- country[,7]
+# names(dat)
+rm(country)
+
+# a few outliers to change
+dat$country1[str_detect(dat$Document.Title, &quot;lettonie&quot;)] &lt;- &quot;latvia&quot;
+dat$country1[str_detect(dat$Document.Title, &quot;italie&quot;)] &lt;- &quot;italy&quot;
+dat$country1[str_detect(dat$Document.Title, &quot;luxemburg&quot;)] &lt;- &quot;luxembourg&quot;
+dat$country1[str_detect(dat$Document.Title, &quot;turquie&quot;)] &lt;- &quot;turkey&quot;
+
+dat &lt;- dat %&gt;%
+  pivot_longer(cols = contains(&quot;country&quot;), names_to = &quot;country_no&quot;, values_to = &quot;country&quot;) %&gt;% 
+  select(-country_no) %&gt;%
+  dplyr::filter(country != &quot;&quot;) %&gt;% # as there would be 7 times each case with empty countries 
+  dplyr::filter(Conclusion != &quot;&quot;) # deleting those without any information in the conclusions column
+
+# count(dat, country, sort = TRUE) %&gt;% view()
+
+ns2 &lt;- nrow(dat)
+
+dat$iso2c &lt;- countrycode(dat$country, &quot;country.name&quot;, &quot;iso2c&quot;)
+
+# check if it worked for all observations
+# count(dat, country, iso2c) %&gt;% arrange(desc(n)) %&gt;% view()</code></pre>
+</div>
+<div id="text-pre-processing---violation-of-and-no-violation-of" class="section level1">
+<h1>Text pre-processing - ‘Violation of …’ and ‘No violation of …’</h1>
+<p>Now, finally, the fun part starts. The conclusions text of the data includes a lot of information, which need to be extracted and brought into a format that can be analysed. Some typical rows look like the following:</p>
+<pre class="r"><code>checks1 %&gt;% select(Conclusion) %&gt;% kable()</code></pre>
+<table>
+<colgroup>
+<col width="100%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">Conclusion</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Violation of Article 6 - Right to a fair trial;Violation of Article 1 of Protocol No. 1 - Protection of property</td>
+</tr>
+<tr class="even">
+<td align="left">No violation of Article 5 - Right to liberty and security;Violation of Article 8 - Right to respect for private and family life</td>
+</tr>
+<tr class="odd">
+<td align="left">Preliminary objection joined to merits and dismissed (non-exhaustion of domestic remedies);Remainder inadmissible;Violation of Art. 5-1;Violation of Art. 5-4;Violation of Art. 5-5;Non-pecuniary damage - award</td>
+</tr>
+<tr class="even">
+<td align="left">Violation of Article 6 - Right to a fair trial</td>
+</tr>
+<tr class="odd">
+<td align="left">Violation of Article 2 - Right to life (Article 2-1 - Effective investigation) (Procedural aspect)</td>
+</tr>
+<tr class="even">
+<td align="left">Violation of Article 3 - Prohibition of torture (Article 3 - Degrading treatment;Inhuman treatment) (Substantive aspect);Violation of Article 13 - Right to an effective remedy (Article 13 - Effective remedy)</td>
+</tr>
+<tr class="odd">
+<td align="left">Violation of Article 3 - Prohibition of torture (Article 3 - Effective investigation) (Procedural aspect);No violation of Article 3 - Prohibition of torture (Article 3 - Degrading treatment;Inhuman treatment) (Substantive aspect)</td>
+</tr>
+<tr class="even">
+<td align="left">No violation of Article 2 - Right to life (Article 2-1 - Life) (Substantive aspect);Violation of Article 2 - Right to life (Article 2-1 - Effective investigation) (Procedural aspect)</td>
+</tr>
+</tbody>
+</table>
+<p>Okay, the table above looks relatively structured. If a violation occurs, it says “Violation of Article …”, if not, it says “No violation of Article …”. Additionally, there is text on preliminary objections and if non-pecuniary damages were awarded. This is the information I am interested in to do some data analysis on human rights violations.</p>
+<p>All is separated by semi-colon <em>;</em>. Yeah, great, let’s just split by semi-colon and … no, wait. Look at the sixth line above, including the text: <em>Prohibition of torture … </em> and the text in brackets. It also includes a semi-colon. F|$"§(/°^9ß8# (<em>that’s me cursing</em>)</p>
+<p>It seems we have to do some manual adjustments. The code below is the result of me bringing everything into structure for analysis. It is the result of many checks and tests - a lot of work which is usually hidden from the outside world, when data analysis is presented. First, I thought I really have to clean up all possible cases manually. You will see the code below, which I started. Fortunately, I soon realised that almost all cases of semicolons which I don’t need for splitting are included in brackets. Good. I just get rid of all text in brackets.</p>
+<p>Before I figured this out, I actually started all manual cleaning, i.e. finding all cases with semi-colons. This would also have solved almost all of the problems, but I prefer the cleaner way obviously. I still show the manual part for completeness below.</p>
+<pre class="r"><code># not run
+dat &lt;- dat %&gt;%
+ mutate(Conclusion = str_replace_all(Conclusion, &quot;Art\\.&quot;, &quot;Article&quot;),
+        Conclusion = str_replace(Conclusion, &quot;liberty;Lawful&quot;, &quot;liberty;Lawful&quot;),
+        Conclusion = str_replace(Conclusion, &quot;correspondence;Respect&quot;, &quot;correspondence;Respect&quot;),
+        Conclusion = str_replace(Conclusion, &quot;property;Peaceful&quot;, &quot;property;Peaceful&quot;),
+        Conclusion = str_replace(Conclusion, &quot;obligations;Article&quot;, &quot;obligations;Article&quot;),
+        Conclusion = str_replace(Conclusion, &quot;;Article&quot;, &quot;,Article&quot;),
+        Conclusion = str_replace(Conclusion, &quot;; Article&quot;, &quot;, Article&quot;),
+        Conclusion = str_replace(Conclusion, &quot;;Inhuman&quot;, &quot;,Inhuman&quot;),
+        Conclusion = str_replace(Conclusion, &quot;;Respect&quot;, &quot;,Respect&quot;),
+        Conclusion = str_replace(Conclusion, &quot;;\\(Art&quot;, &quot;,\\(Art&quot;),
+        Conclusion = str_replace(Conclusion, &quot;;Equality of&quot;, &quot;,Equality of&quot;),
+        Conclusion = str_replace(Conclusion, &quot;;Prohibition&quot;, &quot;,Prohibition&quot;),
+        Conclusion = str_replace(Conclusion, &quot;;Reasonableness&quot;, &quot;,Reasonableness&quot;),
+        Conclusion = str_replace(Conclusion, &quot;;Independent&quot;, &quot;,Independent&quot;),
+        Conclusion = str_replace(Conclusion, &quot;;Just satis&quot;, &quot;,Just satis&quot;),
+        Conclusion = str_replace(Conclusion, &quot;;Procedure&quot;, &quot;,Procedure&quot;),
+        Conclusion = str_replace(Conclusion, &quot;;Speediness&quot;, &quot;,Speediness&quot;),
+        Conclusion = str_replace(Conclusion, &quot;;Possessions&quot;, &quot;,Possessions&quot;),
+        Conclusion = str_replace(Conclusion, &quot;;Review&quot;, &quot;,Review&quot;),
+        Conclusion = str_replace(Conclusion, &quot;;Degrading&quot;, &quot;,Degrading&quot;),
+        Conclusion = str_replace(Conclusion, &quot;;Review&quot;, &quot;,Review&quot;),
+        Conclusion = str_replace(Conclusion, &quot;;Adversarial&quot;, &quot;,Adversarial&quot;),
+        Conclusion = str_replace(Conclusion, &quot;;Fair&quot;, &quot;,Fair&quot;),
+        Conclusion = str_replace(Conclusion, &quot;; non-exhaustion&quot;, &quot;, non-exhaustion&quot;),
+        Conclusion = str_replace(Conclusion, &quot;;Positive obligation&quot;, &quot;,Positive obligation&quot;),
+        Conclusion = str_replace(Conclusion, &quot;;Security&quot;, &quot;,Security&quot;),
+        Conclusion = str_replace(Conclusion, &quot;;Criminal&quot;, &quot;,Criminal&quot;),
+        Conclusion = str_replace(Conclusion, &quot;; General measures&quot;, &quot;,   General measures&quot;),
+        Conclusion = str_replace(Conclusion, &quot;;Freedom&quot;, &quot;,Freedom&quot;),
+        Conclusion = str_replace(Conclusion, &quot;;Security&quot;, &quot;,Security&quot;))</code></pre>
+<p>But then, as mentioned above, I realised that all the information that I do not want to split by ; is included in brackets. So, with a little regex, I just get rid of all brackets and this solves most of my problems.</p>
+<pre class="r"><code>dat &lt;- dat %&gt;%
+  mutate(Conclusion = str_replace_all(Conclusion, &quot;\\([^()]+\\)&quot;, &quot;&quot;),
+         Conclusion = str_replace_all(Conclusion, &quot;Art\\.&quot;, &quot;Article&quot;),
+         Conclusion = str_trim(Conclusion))</code></pre>
+<p>That’s much quicker, easier and more elegant.</p>
+<p>Now, let’s create a long version of the data, where we have one line per conclusion (and more cleaning):</p>
+<pre class="r"><code>dat &lt;- dat %&gt;%
+  mutate(con2 = str_split(Conclusion, &quot;;&quot;)) %&gt;%
+  unnest(cols = c(con2)) %&gt;%
+  dplyr::select(-datetype) %&gt;%
+  mutate(con2 = str_trim(con2),
+         con2 = str_replace(con2, &quot; - .*&quot;, &quot;&quot;), # here I get rid of everything after &#39; - &#39; which I dont need for analysis
+         con2 = str_replace(con2, &quot;P1-1&quot;, &quot;Article 1 of Protocol No. 1&quot;), #cleaning a few other more inconsistencies (yes, could be done more elegantly)
+         con2 = str_replace(con2, &quot;P4-2&quot;, &quot;Article 2 of Protocol No. 4&quot;),
+         con2 = str_replace(con2, &quot;P1-2&quot;, &quot;Article 2 of Protocol No. 1&quot;),
+         con2 = str_replace(con2, &quot;P1-3&quot;, &quot;Article 3 of Protocol No. 1&quot;),
+         con2 = str_replace(con2, &quot;P7-4&quot;, &quot;Article 4 of Protocol No. 7&quot;),
+         con2 = str_replace(con2, &quot;P7-1&quot;, &quot;Article 1 of Protocol No. 7&quot;),
+         con2 = str_replace(con2, &quot;P7-2&quot;, &quot;Article 2 of Protocol No. 7&quot;),
+         con2 = str_replace(con2, &quot;P6-1&quot;, &quot;Article 1 of Protocol No. 6&quot;),
+         con2 = str_replace(con2, &quot;P3-1&quot;, &quot;Article 1 of Protocol No. 3&quot;),
+         con2 = str_replace(con2, &quot; and &quot;, &quot;+&quot;),
+         con2 = str_replace(con2, &quot;de l&#39;art.&quot;, &quot;of Article&quot;)) </code></pre>
+<p>After all the above cleaning, the data are still not perfect, however, the data are structured enough to do some general analysis on violation vs no violation of cases and getting a sense of the main articles violated and not violated. Let’s create a few variables for analysis. Most notably, a variable that indicates whether or a violation was found. As several articles can be violated, or not violated, we will have several instances per case. There is much more that can be done, but I’ll leave it at that (not sure how many readers are actually left at this stage).</p>
+<pre class="r"><code>dat &lt;- dat %&gt;%
+  mutate(violation = ifelse(str_detect(con2, &quot;Violation&quot;), 1,
+                            ifelse(str_detect(con2, &quot;No violation&quot;), 0, NA)),
+         otherdecision = ifelse(str_detect(con2, &quot;Violation&quot;), 1,
+                                ifelse(str_detect(con2, &quot;No violation&quot;), 1, 0)),
+         article = str_extract(con2, &quot;iolations?.*&quot;),
+         article = str_replace(article, &quot;iolations? of &quot;, &quot;&quot;) %&gt;% str_trim())
+
+dat &lt;- dat %&gt;% group_by(id) %&gt;%
+  mutate(otherdecision = as.integer(sum(otherdecision) == 0)) %&gt;%
+  ungroup() %&gt;%
+  rename(year_decision = year) %&gt;%
+  mutate(year_lodged = str_sub(Application.Number, -2, -1),
+         year = ifelse(year_lodged &gt; 20, paste0(19, year_lodged),
+                              paste0(20, year_lodged)) %&gt;% as.numeric())</code></pre>
+</div>
+<div id="some-results" class="section level1">
+<h1>Some results</h1>
+<p>We are done! Now we have a dataset ready for analysing human rights violations. Are you excited as I am?</p>
+<p>It includes information and data, which - to my knowledge - not many people have analysed so far. It is a long dataset with several observations per case, separately for each article violation decision and country involved.</p>
+<p>What could be analysed? A few examples follow.</p>
+<div id="how-many-cases-found-a-violation" class="section level4">
+<h4>How many cases found a violation?</h4>
+<pre class="r"><code>n_viols &lt;- filter(dat, violation == 1) %&gt;% nrow()
+
+# overal judgments finding a violation
+d2 &lt;- dat %&gt;% 
+  group_by(id) %&gt;% 
+  summarise(n_viol = sum(violation, na.rm = TRUE),
+            if_viol = ifelse(n_viol &gt; 0, 1, 0),
+            year_decision = mean(year_decision),
+            year_lodged = mean(year))
+
+t1 &lt;- count(d2, n_viol) %&gt;% mutate(prp = round(n/sum(n), 2)) %&gt;% head()
+
+t1</code></pre>
+<pre><code>## # A tibble: 6 x 3
+##   n_viol     n   prp
+##    &lt;dbl&gt; &lt;int&gt; &lt;dbl&gt;
+## 1      0  1654  0.14
+## 2      1  6183  0.53
+## 3      2  2565  0.22
+## 4      3   576  0.05
+## 5      4   264  0.02
+## 6      5   188  0.02</code></pre>
+<pre class="r"><code>no_viol &lt;- 100*(t1 %&gt;% filter(n_viol == 0) %&gt;% pull(prp))
+viol &lt;- 100-no_viol</code></pre>
+<p>Only 14 percent cases found no violation in our dataset. 86 percent found at least one, but several more than one article violated.</p>
+</div>
+<div id="which-articles-are-most-often-violated" class="section level4">
+<h4>Which articles are most often violated?</h4>
+<pre class="r"><code>dat %&gt;% 
+  filter(violation == 1) %&gt;% 
+  count(article, sort = TRUE) %&gt;% 
+  mutate(prp = round(n/sum(n), 2)) %&gt;% 
+  head()</code></pre>
+<pre><code>## # A tibble: 6 x 3
+##   article                         n   prp
+##   &lt;chr&gt;                       &lt;int&gt; &lt;dbl&gt;
+## 1 Article 6                    2627  0.16
+## 2 Article 3                    2521  0.16
+## 3 Article 6-1                  1730  0.11
+## 4 Article 1 of Protocol No. 1  1608  0.1 
+## 5 Article 5                    1574  0.1 
+## 6 Article 8                    1007  0.06</code></pre>
+<p>Most often Article 6 (<em>Right to a fair trial</em> and more), Article 3 (<em>Prohibition of torture and inhuman or degrading treatment or punishment</em>), and Article 6-1 (<em>fair trial</em>, yes, Article 6 has several elements, sometimes it is more detailed about paragraphs of articles - so more opportuntities for detailed analysis).</p>
+</div>
+<div id="which-countries-most-often-violate-the-echr" class="section level4">
+<h4>Which countries most often violate the ECHR?</h4>
+<p>NB: this is on the level of decisions on articles, not judgment, hence more than one per case possible.</p>
+<pre class="r"><code>dat %&gt;% 
+  filter(violation == 1) %&gt;% 
+  count(country, sort = TRUE) %&gt;% 
+  mutate(prp = round(n/sum(n), 2)) %&gt;% 
+  head()</code></pre>
+<pre><code>## # A tibble: 6 x 3
+##   country      n   prp
+##   &lt;chr&gt;    &lt;int&gt; &lt;dbl&gt;
+## 1 russia    3822  0.24
+## 2 turkey    2638  0.16
+## 3 ukraine   1378  0.09
+## 4 romania   1297  0.08
+## 5 bulgaria   760  0.05
+## 6 poland     702  0.04</code></pre>
+<p>Not surprisingly: Russia</p>
+</div>
+<div id="how-long-does-it-take-on-average-from-lodging-a-case-at-the-ecthr-to-the-judgment-of-a-violation" class="section level4">
+<h4>How long does it take on average from lodging a case at the ECtHR to the judgment of a violation?</h4>
+<p>This is something you don’t easily get from other data sources.</p>
+<pre class="r"><code>ave_time &lt;- d2 %&gt;% 
+  filter(if_viol == 1) %&gt;% 
+  mutate(time_to_violation_judgment = year_decision-year_lodged) %&gt;% 
+  pull(time_to_violation_judgment) %&gt;% 
+  mean(.) %&gt;% 
+  round(digits = 1)</code></pre>
+<p>It takes an average of 5.3 from lodging a case at the ECtHR to obtainig a decision.</p>
+</div>
+<div id="how-well-can-we-predict-the-outcome-of-a-judgment-on-merits-when-simply-using-information-on-the-year-of-lodging-the-application-the-country-involved-and-article-of-the-echr" class="section level4">
+<h4>How well can we predict the outcome of a judgment on merits, when simply using information on the year of lodging the application, the country involved and article of the ECHR?</h4>
+<p>Very cool question in a world of AI and machine learning [yes, I know, I am doing just a simple logistic regression with very few variables … who cares … I still call it AI]</p>
+<pre class="r"><code>dat &lt;- dat %&gt;% 
+  filter(!is.na(violation)) %&gt;% 
+  mutate(article = fct_lump_min(article, 20))
+
+s &lt;- round(nrow(dat))*0.8
+set.seed(220618)
+idx &lt;- sample(1:nrow(dat), size = s)
+
+dat80 &lt;- dat[idx, ]
+dat20 &lt;- dat[-idx, ]
+
+m1 &lt;- glm(violation ~ factor(year) + article + iso2c, 
+          data = dat80, family = binomial(link = &quot;logit&quot;))
+
+mn_correct &lt;- dat20 %&gt;% 
+  mutate(preds = predict(m1, newdata = dat20, type = &quot;response&quot;),
+         correct = ifelse((preds &gt; 0.5 &amp; violation == 1) | (preds &lt; 0.5 &amp; violation == 0),
+                          1, 0)) %&gt;% 
+  summarise(mean(correct))
+
+mn_correct &lt;- round(100*mn_correct)</code></pre>
+<p>Hoooray. We have a machine learning model that correctly predictions violations of articles at 83 percent! ;-)</p>
+</div>
+</div>
+<div id="conclusions---other-ways-and-data-sources-of-data-on-violations-of-the-european-court-of-human-rights" class="section level1">
+<h1>Conclusions - Other ways and data sources of data on violations of the European Court of Human Rights</h1>
+<p>If you read the post until here, I am quite impressed. The post showed how difficult it is to work with messy data, and how much work and decisions are behind data cleaning.</p>
+<p>So far, I haven’t really made a fuller analysis of the data, as I am not 100% sure if everything is perfectly in order. It would require a few more case checks. I am confident that the results are relevant for research purposes, but this was done relatively quickly and should be further checked before being fully used.</p>
+<p>Until now, I co-authored two publications including an analysis of ECtHR violations data. In both cases, I used a different dataset. In one case, the research question was a bit different, and because I wasn’t sure about the above dataset in the other. The latter case included an analysis of violations with a focus on comparing the country Austria to others in terms of violations.<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a> We still analysed other countries and built clusters of countries according to violations of articles. For this case, I actually resorted to plain old copying and pasting data on violations for several years from PDFs published by the court into Excel. It took a few hours (data compilation can be quite relaxing actually) and allowed me to create a dataset including information on the number of judgments including (1) at least one violation, (2) no violation, or (3) any other decision, as well as the articles found to be in violation. The basis are PDFs like <a href="https://echr.coe.int/Documents/Stats_violation_2020_ENG.pdf">this for the year 2020</a>, or <a href="https://echr.coe.int/Documents/Stats_violation_1959_2020_ENG.pdf">this for all years since 1959 but aggregated</a>.<a href="#fn3" class="footnote-ref" id="fnref3"><sup>3</sup></a></p>
+<p>The other analysis looked in the violations of the ECtHR based on the database of executions of judgments <a href="https://hudoc.exec.coe.int/eng#%7B%22EXECDocumentTypeCollection%22:%5B%22CEC%22%5D%7D">HUDOC EXEC</a>. This dataset includes a nicer way of presenting articles and other information, but only incudes violations. Read the analysis <a href="https://www.researchgate.net/profile/David-Reichel/publication/330770184_A_Decade_of_Violations_of_the_European_Convention_on_Human_Rights_Exploring_Patterns_of_Repetitive_Violations/links/5e75d5fc299bf1892cfbe663/A-Decade-of-Violations-of-the-European-Convention-on-Human-Rights-Exploring-Patterns-of-Repetitive-Violations.pdf">here</a>.<a href="#fn4" class="footnote-ref" id="fnref4"><sup>4</sup></a> It highlights structural human rights issues in certain countries as there are many repetitive cases that in some countries link to exactly the same leading case, but in others more diversly to different leading cases, making it more difficult to pinpoint the issues.</p>
+<p>I quick check showed that the number of violations in these three datasets do not match up 100%. However, they are very similar and preserve the statistical correlations among countries etc.</p>
+</div>
+<div id="conclusion" class="section level1">
+<h1>Conclusion</h1>
+<p>If you liked reading this post, you are a natural born data scientist. If not, think twice if you want to work in ‘one of the most sexiest jobs of the decade’.<a href="#fn5" class="footnote-ref" id="fnref5"><sup>5</sup></a></p>
+</div>
+<div class="footnotes">
+<hr />
+<ol>
+<li id="fn1"><p>Wickham H. (2014): <a href="https://www.jstatsoft.org/article/view/v059i10/">Tidy Data. *Journal of Statistical Software, Vol. 59 (10).</a><a href="#fnref1" class="footnote-back">↩</a></p></li>
+<li id="fn2"><p>Forthcoming book chapter: Toggenburg G. N. and Reichel D. (2022, forthcoming): ‘Vienna found guilty in Strasbourg: a look at (statistical) patterns in ECtHR judgements’<a href="#fnref2" class="footnote-back">↩</a></p></li>
+<li id="fn3"><p>if you are interested in using the dataset, just drop me line, and I will send it to you.<a href="#fnref3" class="footnote-back">↩</a></p></li>
+<li id="fn4"><p>Reichel, David and Grimheden, Jonas (2018), <a href="https://www.researchgate.net/profile/David-Reichel/publication/330770184_A_Decade_of_Violations_of_the_European_Convention_on_Human_Rights_Exploring_Patterns_of_Repetitive_Violations/links/5e75d5fc299bf1892cfbe663/A-Decade-of-Violations-of-the-European-Convention-on-Human-Rights-Exploring-Patterns-of-Repetitive-Violations.pdf">A Decade of Violations of the European Convention on Human Rights: Exploring Patterns of Repetitive Violations</a>, In: Benedek, Wolgang et al. (eds), European Yearbook on Human Rights, Cambridge et al., intersentia, p. 272.<a href="#fnref4" class="footnote-back">↩</a></p></li>
+<li id="fn5"><p><a href="https://flowingdata.com/2009/02/25/googles-chief-economist-hal-varian-on-statistics-and-data/">Google’s Chief Economist Hal Varian is known for having said that.</a><a href="#fnref5" class="footnote-back">↩</a></p></li>
+</ol>
+</div>
+
+  </section>
+  <footer>
+    
+    <nav class="p-pagination c-pagination">
+      <div class="c-pagination__ctrl">
+        <div class="c-pagination__newer">
+          
+          
+        </div>
+        <div class="c-pagination__older">
+          
+          <a href="https://david-reichel.github.io/posts/vcm-half-marathon/">Older</a>
+          
+        </div>
+      </div>
+    </nav>
+    
+
+<section class="p-related">
+  <h3>See Also</h3>
+  <ul id="slider" class="p-related__list">
+    
+    <li class="p-related__item js-related__item">
+      <a href="/posts/ethical-engineer/"
+        >
+        <span>The ethical engineer - &#39;depends on what it is&#39;</span>
+      </a>
+    </li>
+    
+    <li class="p-related__item js-related__item">
+      <a href="/posts/vcm-half-marathon/"
+        >
+        <span>Analysis of Vienna City Half Marathon results</span>
+      </a>
+    </li>
+    
+    <li class="p-related__item js-related__item">
+      <a href="/posts/citizenship-acquisition-of-brits-in-the-eu/"
+        >
+        <span>Citizenship acquisition of Brits in the EU</span>
+      </a>
+    </li>
+    
+  </ul>
+</section>
+
+
+    
+<aside class="p-author">
+  
+  
+  <div class="p-author__body">
+    
+    <p class="c-title p-author__name ">David Reichel</p>
+    
+    
+    <p>I am a social scientist working on data analytics, citizenship and human rights. This blog includes data analysis on human rights and citizenship related topics (mainly using the free statistical software R).</p>
+    
+    
+    <p>
+      <a href="mailto:david.reichel@protonmail.com">
+        Contact me
+      </a>
+    </p>
+    
+  </div>
+  
+</aside>
+
+
+  </footer>
+</article>
+  </main>
+  
+<nav class="l-nav p-menu">
+  <ul class="p-menu__lists">
+    
+      
+      <li class="p-menu__listitem">
+        <a href="/">Blog</a>
+      </li>
+      
+    
+      
+      <li class="p-menu__listitem">
+        <a href="/about">About</a>
+      </li>
+      
+    
+      
+      <li class="p-menu__listitem">
+        <a href="/tags">Tags</a>
+      </li>
+      
+    
+  </ul>
+</nav>
+
+
+  <footer class="l-footer">
+    
+<ul class="c-links">
+  
+  
+  <li class="c-links__item">
+    <a href="https://twitter.com/david_reichel" target="_blank">
+      <svg viewBox="0 0 64 64" class="c-links__icon">
+        <title>twitter</title>
+        <use xlink:href="#icon-twitter"></use>
+      </svg>
+    </a>
+  </li>
+  
+  
+  
+  
+  
+  <li class="c-links__item">
+    <a href="https://github.com/david-reichel" target="_blank">
+      <svg viewBox="0 0 64 64" class="c-links__icon">
+        <title>github</title>
+        <use xlink:href="#icon-github"></use>
+      </svg>
+    </a>
+  </li>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <li class="c-links__item">
+    <a href="https://linkedin.com/in/David%20Reichel" target="_blank">
+      <svg viewBox="0 0 64 64" class="c-links__icon">
+        <title>linkedin</title>
+        <use xlink:href="#icon-linkedin"></use>
+      </svg>
+    </a>
+  </li>
+  
+</ul>
+
+
+
+    <p class="p-copyright">
+      
+        &copy; Copyright by David Reichel
+      
+    </p>
+  </footer>
+
+  
+    
+  
+
+</body>
+</html>
+

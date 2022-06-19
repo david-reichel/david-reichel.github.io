@@ -7,10 +7,20 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-gb</language>
     <copyright>&amp;copy; Copyright by David Reichel</copyright>
-    <lastBuildDate>Sat, 14 May 2022 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 18 Jun 2022 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://david-reichel.github.io/tags/rstats/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>A data scientist&#39;s tale - ECHR violations data preparation</title>
+      <link>https://david-reichel.github.io/posts/echr-violations-data-preparation-fun/</link>
+      <pubDate>Sat, 18 Jun 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://david-reichel.github.io/posts/echr-violations-data-preparation-fun/</guid>
+      <description>Hello dear reader!
+This post tells a data scientist’s story about working with (human rights violations) data. The post is not about showing results of human rights violations (some are of course included), but about experiences when preparing data for analysis. It is often said that 80% of the work of data analyst is data preparation. So, this post tells you what is usually not shown, the struggle to get a dataset into the right shape for analysis.</description>
+    </item>
     
     <item>
       <title>Analysis of Vienna City Half Marathon results</title>

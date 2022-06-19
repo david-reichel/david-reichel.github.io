@@ -7,15 +7,24 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-gb</language>
     <copyright>&amp;copy; Copyright by David Reichel</copyright>
-    <lastBuildDate>Sat, 14 May 2022 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 18 Jun 2022 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://david-reichel.github.io/categories/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
+      <title>human rights</title>
+      <link>https://david-reichel.github.io/categories/human-rights/</link>
+      <pubDate>Sat, 18 Jun 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://david-reichel.github.io/categories/human-rights/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>rstats</title>
       <link>https://david-reichel.github.io/categories/rstats/</link>
-      <pubDate>Sat, 14 May 2022 00:00:00 +0000</pubDate>
+      <pubDate>Sat, 18 Jun 2022 00:00:00 +0000</pubDate>
       
       <guid>https://david-reichel.github.io/categories/rstats/</guid>
       <description></description>
@@ -45,15 +54,6 @@
       <pubDate>Tue, 02 Nov 2021 00:00:00 +0000</pubDate>
       
       <guid>https://david-reichel.github.io/categories/ethics/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>human rights</title>
-      <link>https://david-reichel.github.io/categories/human-rights/</link>
-      <pubDate>Tue, 02 Nov 2021 00:00:00 +0000</pubDate>
-      
-      <guid>https://david-reichel.github.io/categories/human-rights/</guid>
       <description></description>
     </item>
     
